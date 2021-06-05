@@ -1,0 +1,55 @@
+rules:
+  ipaddress:
+    - engine: regexp
+      patterns:
+        - \b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}/\d{1,2}\b
+      to: XXX.XXX.XXX.XXX/XX
+  plain:
+    - engine: plaintext
+      patterns:
+        - p@ssw0rd
+        - s3cr3t
+      to: XXXX
+  juniperconfig:
+    - engine: substringregexp
+      patterns:
+        - ^enable password (?<pass>.+)
+        - ^username [^ ]+ password \d (?<pass>.+)
+        - ^\s+description (?<desc>.+)
+      to:
+        pass: PASSWORD
+        desc: XXXXXXXX
+
+typemap:
+  ipaddress:
+    - ipaddress
+  juniper:
+    - juniperconfig
+    - plain
+
+test_rules:
+  ipaddress:
+    - text: |-
+        192.168.0.1/24
+        1192.168.0.1/24
+        192.168.0.1/245
+        a192.168.0.1/24
+        a 192.168.0.1/24
+        192.168.0.1/24b
+        192.168.0.1/24 b
+      expect: |-
+        XXX.XXX.XXX.XXX/XX
+        1192.168.0.1/24
+        192.168.0.1/245
+        a192.168.0.1/24
+        a XXX.XXX.XXX.XXX/XX
+        192.168.0.1/24b
+        XXX.XXX.XXX.XXX/XX b
+  juniper:
+    - text: |-
+        enable password 124abcd1234
+        username John password 0 1234abcd1234
+      expect: |-
+        enable password PASSWORD
+        username John password 0 PASSWORD
+ 
