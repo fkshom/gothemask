@@ -5,7 +5,8 @@ import (
 	"os"
 
 	jsoniter "github.com/json-iterator/go"
-	"gopkg.in/yaml.v2"
+	//"gopkg.in/yaml.v2"
+	"github.com/goccy/go-yaml"
 )
 
 type Config struct {
@@ -40,7 +41,6 @@ func NewConfig(filename string) Config {
 	}
 	defer fp.Close()
 	d := yaml.NewDecoder(fp)
-	d.SetStrict(true)
 
 	var config Config
 	err = d.Decode(&config)

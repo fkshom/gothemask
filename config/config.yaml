@@ -10,6 +10,11 @@ rules:
         - p@ssw0rd
         - s3cr3t
       to: XXXX
+    - engine: plaintext
+      patterns:
+        - @aa
+        - \\\\
+      to: XXXX
   juniperconfig:
     - engine: substringregexp
       patterns:

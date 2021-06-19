@@ -5,9 +5,9 @@ go 1.16
 require (
 	github.com/dlclark/regexp2 v1.4.0
 	github.com/go-delve/delve v1.6.1 // indirect
+	github.com/goccy/go-yaml v1.8.9
 	github.com/json-iterator/go v1.1.11
 	github.com/k0kubun/pp v3.0.1+incompatible
-	github.com/mattn/go-colorable v0.1.8 // indirect
 	github.com/mattn/go-isatty v0.0.13 // indirect
 	github.com/mattn/go-runewidth v0.0.13 // indirect
 	github.com/peterh/liner v1.2.1 // indirect
