@@ -3,10 +3,10 @@ package themask
 import (
 	"log"
 	"os"
+	"path/filepath"
 
-	jsoniter "github.com/json-iterator/go"
-	//"gopkg.in/yaml.v2"
 	"github.com/goccy/go-yaml"
+	jsoniter "github.com/json-iterator/go"
 )
 
 type Config struct {
@@ -22,6 +22,18 @@ type Engineconfig struct {
 	Engine string
 }
 
+func merge(m1, m2 map[string]string) map[string]string {
+	ans := map[string]string{}
+
+	for k, v := range m1 {
+		ans[k] = v
+	}
+	for k, v := range m2 {
+		ans[k] = v
+	}
+	return (ans)
+}
+
 func MapToStruct(m map[string]interface{}, val interface{}) error {
 	tmp, err := jsoniter.Marshal(m)
 	if err != nil {
@@ -32,6 +44,36 @@ func MapToStruct(m map[string]interface{}, val interface{}) error {
 		return err
 	}
 	return nil
+}
+
+func NewConfigFromDir(dirname string) (Config, error) {
+	pattern := filepath.Join(dirname, "*.yaml")
+	files, err := filepath.Glob(pattern)
+	config := Config{
+		Rules:   make(map[string][]map[string]interface{}),
+		Typemap: make(map[string][]string),
+		Test_rules: make(map[string][]struct {
+			Text   string
+			Expect string
+		}),
+	}
+	if err != nil {
+		return config, err
+	}
+	for _, filename := range files {
+		log.Println("Loading " + filename + "...")
+		_config := NewConfig(filename)
+		for k, v := range _config.Rules {
+			config.Rules[k] = v
+		}
+		for k, v := range _config.Typemap {
+			config.Typemap[k] = v
+		}
+		for k, v := range _config.Test_rules {
+			config.Test_rules[k] = v
+		}
+	}
+	return config, nil
 }
 
 func NewConfig(filename string) Config {

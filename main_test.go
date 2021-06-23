@@ -3,12 +3,16 @@ package main
 import (
 	"fmt"
 	"gothemask/themask"
+	"log"
 	"os"
 	"testing"
 )
 
 func TestMain(t *testing.T) {
-	_config := themask.NewConfig("config/config.yaml")
+	_config, err := themask.NewConfigFromDir("config/")
+	if err != nil {
+		log.Fatalln(err)
+	}
 	config := themask.ResolveConfig(_config)
 	for typename := range _config.Test_rules {
 		_, ok := config[typename]

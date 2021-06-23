@@ -19,7 +19,10 @@ func main() {
 		themask.SetLevel(themask.WARN)
 	}
 
-	_config := themask.NewConfig("config/config.yaml")
+	_config, err := themask.NewConfigFromDir("config/")
+	if err != nil {
+		log.Fatalln(err)
+	}
 	config := themask.ResolveConfig(_config)
 	_, ok := config[*typename]
 	if !ok {
