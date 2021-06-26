@@ -17,13 +17,13 @@ var logger Logger = &BasicLogger{
 	Logger: log.New(os.Stderr, "", log.LstdFlags),
 }
 
-var level int = 0
 
 const (
 	DEBUG int = iota
 	WARN
 	SILENT
 )
+var level int = WARN
 
 func SetLogger(l Logger) {
 	logger = l

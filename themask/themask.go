@@ -28,7 +28,12 @@ func (tm TheMask) Smoking(text string) string {
 }
 
 func (tm TheMask) SmokingFile(infilename string, outfilename string) error {
-	logger.Debugf("Start SmokingFile")
+	logger.Debugf("Start SmokingFile")0
+
+	if outfilename == "" {
+		outfilename = infilename + ".filtered"
+	}
+
 	logger.Debugf("infilename:  %s", infilename)
 	logger.Debugf("outfilename: %s", outfilename)
 
